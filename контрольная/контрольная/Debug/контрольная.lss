@@ -1,8 +1,8 @@
 
-AVRASM ver. 2.2.8  C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm Thu Nov 23 19:43:46 2023
+AVRASM ver. 2.2.8  D:\microcontrollers-KR\контрольная\контрольная\main.asm Thu Nov 23 20:32:25 2023
 
-[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
-[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
+[builtin](2): Including file 'F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
+[builtin](2): Including file 'F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
                                  
                                  ;
                                  
@@ -1459,8 +1459,6 @@ AVRASM ver. 2.2.8  C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\ma
                                  .def spd = R19
                                  .def mod = R20
                                  .def tmp2 = R21
-                                 
-                                 
                                  .dseg
                                  
                                  .cseg
@@ -1479,7 +1477,7 @@ AVRASM ver. 2.2.8  C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\ma
 000006 b904                      	out DDRB, tmp
 000007 ef0f                      	ldi tmp, 0xff; РіРёСЂР»СЏРЅРґР°
 000008 b907                      	out DDRC, tmp
-000009 e007                      	ldi tmp, 0b00000111; РєРЅРѕРїРєРё
+000009 ef0f                      	ldi tmp, 0xff; РєРЅРѕРїРєРё
 00000a b90d                      	out DDRE, tmp
 00000b e100                      	ldi tmp, 0b00010000; PUD bit //РїРѕРґР°С‡Р° РїРёС‚Р°РЅРёСЏ РЅР° РєРЅРѕРїРѕС‡СЊРєРё
 00000c bf05                      	out MCUCR, tmp
@@ -1518,6 +1516,7 @@ AVRASM ver. 2.2.8  C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\ma
                                  
                                  
                                  timer1_handler:
+                                 	
 00002d e000                      	ldi tmp, 0
 00002e 1710                      	cp buf, tmp
 00002f f021                      	breq timer_equal ;branch if equal

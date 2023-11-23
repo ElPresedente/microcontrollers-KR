@@ -10,8 +10,6 @@
 .def spd = R19
 .def mod = R20
 .def tmp2 = R21
-
-
 .dseg
 
 .cseg
@@ -30,7 +28,7 @@ setup:
 	out DDRB, tmp
 	ldi tmp, 0xff; гирлянда
 	out DDRC, tmp
-	ldi tmp, 0b00000111; кнопки
+	ldi tmp, 0xff; кнопки
 	out DDRE, tmp
 	ldi tmp, 0b00010000; PUD bit //подача питания на кнопочьки
 	out MCUCR, tmp
@@ -69,6 +67,7 @@ start:
 
 
 timer1_handler:
+	
 	ldi tmp, 0
 	cp buf, tmp
 	breq timer_equal ;branch if equal

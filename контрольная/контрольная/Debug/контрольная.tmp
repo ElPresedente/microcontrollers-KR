@@ -1,18 +1,18 @@
 <ASSEMBLER_INFO>
  <VERSION>2.2.8</VERSION>
  <DEVICE>"ATmega6490"</DEVICE>
- <WORKING_DIR>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\Debug</WORKING_DIR>
+ <WORKING_DIR>D:\microcontrollers-KR\контрольная\контрольная\Debug</WORKING_DIR>
  <INCLUDE_PATH>
-  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
-  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR>F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>F:\SDK\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</SOURCE_FILE>
+ <SOURCE_FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</SOURCE_FILE>
  <INCLUDED_FILES>
-  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc</FILE>
+  <FILE>F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\Debug\контрольная.obj</FILE>
+  <FILE>D:\microcontrollers-KR\контрольная\контрольная\Debug\контрольная.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>контрольная.hex</FILE>
@@ -22,25 +22,25 @@
   <FILE>контрольная.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <setup><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>28</LINE></setup>
-  <timer1_handler><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>71</LINE></timer1_handler>
-  <buttons_handler><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>87</LINE></buttons_handler>
-  <timer_init><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>37</LINE></timer_init>
-  <pwm_init><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>46</LINE></pwm_init>
-  <buttons_init><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>51</LINE></buttons_init>
-  <registres_setup><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>57</LINE></registres_setup>
-  <start><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>66</LINE></start>
-  <timer_equal><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>79</LINE></timer_equal>
-  <timer_return><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>83</LINE></timer_return>
-  <buttons_no_power_proc><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>94</LINE></buttons_no_power_proc>
-  <power_button_proc><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>106</LINE></power_button_proc>
-  <buttons_no_mode_proc><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>98</LINE></buttons_no_mode_proc>
-  <mode_button_proc><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>116</LINE></mode_button_proc>
-  <buttons_return><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>102</LINE></buttons_return>
-  <speed_button_proc><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>124</LINE></speed_button_proc>
-  <power_button_proc_if><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>111</LINE></power_button_proc_if>
-  <power_button_proc_end><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>113</LINE></power_button_proc_end>
-  <speed_button_proc_odd><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>135</LINE></speed_button_proc_odd>
-  <speed_button_proc_odd_after><FILE>C:\Users\vova1\Desktop\контрольная\контрольная\контрольная\main.asm</FILE><LINE>137</LINE></speed_button_proc_odd_after>
+  <setup><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>26</LINE></setup>
+  <timer1_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>69</LINE></timer1_handler>
+  <buttons_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>86</LINE></buttons_handler>
+  <timer_init><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>35</LINE></timer_init>
+  <pwm_init><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>44</LINE></pwm_init>
+  <buttons_init><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>49</LINE></buttons_init>
+  <registres_setup><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>55</LINE></registres_setup>
+  <start><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>64</LINE></start>
+  <timer_equal><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>78</LINE></timer_equal>
+  <timer_return><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>82</LINE></timer_return>
+  <buttons_no_power_proc><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>93</LINE></buttons_no_power_proc>
+  <power_button_proc><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>105</LINE></power_button_proc>
+  <buttons_no_mode_proc><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>97</LINE></buttons_no_mode_proc>
+  <mode_button_proc><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>115</LINE></mode_button_proc>
+  <buttons_return><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>101</LINE></buttons_return>
+  <speed_button_proc><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>123</LINE></speed_button_proc>
+  <power_button_proc_if><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>110</LINE></power_button_proc_if>
+  <power_button_proc_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>112</LINE></power_button_proc_end>
+  <speed_button_proc_odd><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>134</LINE></speed_button_proc_odd>
+  <speed_button_proc_odd_after><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>136</LINE></speed_button_proc_odd_after>
  </LABELS>
 </ASSEMBLER_INFO>
