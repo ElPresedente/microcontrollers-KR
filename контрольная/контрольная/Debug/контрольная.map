@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  D:\microcontrollers-KR\контрольная\контрольная\main.asm Tue Dec 05 21:26:27 2023
+AVRASM ver. 2.2.8  D:\microcontrollers-KR\контрольная\контрольная\main.asm Tue Dec 05 22:09:54 2023
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1079,33 +1079,39 @@ DEF  spd          r19
 DEF  mod          r20
 DEF  sreg_save    r21
 DEF  tmp2         r22
-CSEG reset        0000000f
-CSEG PCI0_int_handler 00000039
-CSEG OC1A_int_handler 0000005b
-CSEG main_loop    00000037
-CSEG power_handler 00000043
-CSEG mode_handler 0000004a
-CSEG speed_handler 00000050
-CSEG PCI0_int_handler_end 00000041
-CSEG power_handler_off 00000048
-CSEG power_handler_on 00000046
-CSEG power_handler_end 00000049
-CSEG mode_handler_end 0000004f
-CSEG speed_handler_not_reset 00000055
-CSEG power_off    00000065
-CSEG power_on     0000005f
-CSEG mode_half_blink 00000074
-CSEG mode_flashing 0000006a
-CSEG mode_led_chain 0000007e
-CSEG OC1A_int_handler_end 00000068
-CSEG power_led_off 0000008b
-CSEG mode_flashing_off 00000070
-CSEG mode_flashing_on 0000006d
-CSEG mode_flashing_end 00000072
-CSEG mode_half_blink_2 0000007a
-CSEG mode_half_blink_1 00000077
-CSEG mode_half_blink_end 0000007c
-CSEG led_chain_shift_start 00000080
-CSEG led_chain_shift_end 00000085
-CSEG mode_led_chain_end 0000008a
-CSEG power_led_on 0000008d
+DEF  pow_but_dir  r23
+CSEG reset        00000015
+CSEG PCI0_int_handler 00000046
+CSEG OC1A_int_handler 0000006b
+CSEG OC0_int_handler 000000a8
+CSEG main_loop    00000044
+CSEG power_handler 00000050
+CSEG mode_handler 00000059
+CSEG speed_handler 0000005f
+CSEG PCI0_int_handler_end 0000004e
+CSEG power_handler_off 00000056
+CSEG power_handler_on 00000053
+CSEG power_led_off_proc 0000009a
+CSEG power_handler_end 00000058
+CSEG power_led_on_proc 000000a1
+CSEG mode_handler_end 0000005e
+CSEG speed_handler_not_reset 00000064
+CSEG power_off    00000075
+CSEG power_on     0000006f
+CSEG mode_half_blink 00000083
+CSEG mode_flashing 00000079
+CSEG mode_led_chain 0000008d
+CSEG OC1A_int_handler_end 00000077
+CSEG mode_flashing_off 0000007f
+CSEG mode_flashing_on 0000007c
+CSEG mode_flashing_end 00000081
+CSEG mode_half_blink_2 00000089
+CSEG mode_half_blink_1 00000086
+CSEG mode_half_blink_end 0000008b
+CSEG led_chain_shift_start 0000008f
+CSEG led_chain_shift_end 00000094
+CSEG mode_led_chain_end 00000099
+CSEG pow_but_power_on 000000b4
+CSEG pow_but_power_off 000000ae
+CSEG disable_OC0  000000bc
+CSEG OC0_int_handler_end 000000b9

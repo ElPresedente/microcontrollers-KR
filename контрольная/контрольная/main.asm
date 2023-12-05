@@ -12,6 +12,7 @@
 .def mod = R20
 .def sreg_save = R21
 .def tmp2 = R22
+.def pow_but_dir = R23
 
 .dseg
 
@@ -25,6 +26,9 @@ rjmp PCI0_int_handler
 
 .org OC1Aaddr
 rjmp OC1A_int_handler
+
+.org OC0addr
+rjmp OC0_int_handler
 
 
 
@@ -51,6 +55,13 @@ reset:					ldi tmp, low(RAMEND);инициализация стека
 						sts TCCR2A, tmp
 						ldi tmp, 0
 						sts OCR2A, tmp
+
+						ldi tmp, (1 << WGM01) | (1 << CS01) ;таймер для изменения значения шим (таймер для таймера???)
+						out TCCR0A, tmp
+						ldi tmp, 200
+						out OCR0A, tmp
+						ldi tmp, (0 << OCIE0A)
+						sts TIMSK0, tmp
 					
 						ldi tmp, (1 << PCIE0); инициализация внешнего прерывания PCINT0
 						out EIMSK, tmp
@@ -81,16 +92,18 @@ PCI0_int_handler:		in sreg_save, SREG
 						brtc mode_handler
 						bst tmp, PINE2
 						brtc speed_handler
-PCI0_int_handler_end:	
-						out SREG, sreg_save
+	
+PCI0_int_handler_end:	out SREG, sreg_save
 						reti
 
 power_handler:			ldi buf, 0
 						cpi pow, 0
 						breq power_handler_off
 power_handler_on:		ldi pow, 0
+						rcall power_led_off_proc
 						rjmp power_handler_end
 power_handler_off:		ldi pow, 1
+						rcall power_led_on_proc
 power_handler_end:		rjmp PCI0_int_handler_end
 
 mode_handler:			inc mod
@@ -108,6 +121,7 @@ speed_handler:			cli
 speed_handler_not_reset:sts OCR1AH, spd
 						ldi tmp, 0
 						sts OCR1AL, tmp
+						sei
 						rjmp PCI0_int_handler_end
 
 OC1A_int_handler:		in sreg_save, SREG
@@ -120,8 +134,7 @@ power_on:				ldi tmp, 1
 						brlt mode_flashing;режим 0
 						rjmp mode_led_chain;режим 2
 						rjmp OC1A_int_handler_end
-power_off:				rcall power_led_off
-						ldi tmp, 0
+power_off:				ldi tmp, 0
 						out PORTC, tmp
 OC1A_int_handler_end:	out SREG, sreg_save
 						reti
@@ -162,7 +175,43 @@ led_chain_shift_end:	out PORTC, tmp2
 						ldi buf, 0
 mode_led_chain_end:		rjmp OC1A_int_handler_end
 
-power_led_off:			nop
+power_led_off_proc:		cli
+						ldi pow_but_dir, 0
+						ldi tmp, (1 << OCIE0A); включаем таймер
+						sts TIMSK0, tmp
+						sei
 						ret
-power_led_on:			nop
+
+power_led_on_proc:		cli
+						ldi pow_but_dir, 1
+						ldi tmp, (1 << OCIE0A); включаем таймер
+						sts TIMSK0, tmp
+						sei
 						ret
+
+						/*ldi tmp, 0
+						sts OCR2A, tmp*/
+
+OC0_int_handler:		in sreg_save, SREG
+						cli
+						lds tmp, OCR2A
+						cpi pow_but_dir, 0
+						brne pow_but_power_on
+pow_but_power_off:		cpi tmp, 255; лампа выключена на 255
+						breq disable_OC0
+						inc tmp
+						sts OCR2A, tmp
+						rjmp OC0_int_handler_end
+
+pow_but_power_on:		cpi tmp, 0; лампа включена на 0
+						breq disable_OC0	
+						dec tmp
+						sts OCR2A, tmp	
+								
+OC0_int_handler_end:	sei
+						out SREG, sreg_save
+						reti
+
+disable_OC0:			ldi tmp, (0 << OCIE0A); отключаем таймер (не нужен)
+						sts TIMSK0, tmp
+						rjmp OC0_int_handler_end

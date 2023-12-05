@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  D:\microcontrollers-KR\�����������\�����������\main.asm Tue Dec 05 21:26:27 2023
+AVRASM ver. 2.2.8  D:\microcontrollers-KR\�����������\�����������\main.asm Tue Dec 05 22:09:54 2023
 
 [builtin](2): Including file 'F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
 [builtin](2): Including file 'F:/SDK\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m6490def.inc'
@@ -1461,159 +1461,208 @@ AVRASM ver. 2.2.8  D:\microcontrollers-KR\�����������\�����������\main.asm Tue D
                                  .def mod = R20
                                  .def sreg_save = R21
                                  .def tmp2 = R22
+                                 .def pow_but_dir = R23
                                  
                                  .dseg
                                  
                                  .cseg
                                  
                                  .org $0000
-000000 c00e                      rjmp reset
+000000 c014                      rjmp reset
                                  
                                  .org PCI0addr
-000004 c034                      rjmp PCI0_int_handler
+000004 c041                      rjmp PCI0_int_handler
                                  
                                  .org OC1Aaddr
-00000e c04c                      rjmp OC1A_int_handler
+00000e c05c                      rjmp OC1A_int_handler
+                                 
+                                 .org OC0addr
+000014 c093                      rjmp OC0_int_handler
                                  
                                  
                                  
                                  ; Replace with your application code
-00000f ef0f                      reset:					ldi tmp, low(RAMEND);инициализация стека
-000010 bf0d                      						out SPL, tmp
-000011 e100                      						ldi tmp, high(RAMEND)
-000012 bf0e                      						out SPH, tmp
+000015 ef0f                      reset:					ldi tmp, low(RAMEND);инициализация стека
+000016 bf0d                      						out SPL, tmp
+000017 e100                      						ldi tmp, high(RAMEND)
+000018 bf0e                      						out SPH, tmp
                                  
-000013 e020                      						ldi pow, 0; инициализация регистров
-000014 e010                      						ldi buf, 0
-000015 e040                      						ldi mod, 0
-000016 e032                      						ldi spd, 2
+000019 e020                      						ldi pow, 0; инициализация регистров
+00001a e010                      						ldi buf, 0
+00001b e040                      						ldi mod, 0
+00001c e032                      						ldi spd, 2
                                  
-000017 e002                      						ldi tmp, (1<<OCIE1A);инициализация таймера
-000018 9300 006f                 						sts TIMSK1, tmp
-00001a e00c                      						ldi tmp, (1 << WGM12) | (1 << CS12); таймер по сравнению, прескейлер 1024
-00001b 9300 0081                 						sts TCCR1B, tmp
-00001d 9330 0089                 						sts OCR1AH, spd; скорость
-00001f e000                      						ldi tmp, 0x00
-000020 9300 0088                 						sts OCR1AL, tmp
+00001d e002                      						ldi tmp, (1<<OCIE1A);инициализация таймера
+00001e 9300 006f                 						sts TIMSK1, tmp
+000020 e00c                      						ldi tmp, (1 << WGM12) | (1 << CS12); таймер по сравнению, прескейлер 1024
+000021 9300 0081                 						sts TCCR1B, tmp
+000023 9330 0089                 						sts OCR1AH, spd; скорость
+000025 e000                      						ldi tmp, 0x00
+000026 9300 0088                 						sts OCR1AL, tmp
                                  
-000022 e709                      						ldi tmp, 0b01111001; инициализация pwm
-000023 9300 00b0                 						sts TCCR2A, tmp
-000025 e000                      						ldi tmp, 0
-000026 9300 00b3                 						sts OCR2A, tmp
+000028 e709                      						ldi tmp, 0b01111001; инициализация pwm
+000029 9300 00b0                 						sts TCCR2A, tmp
+00002b e000                      						ldi tmp, 0
+00002c 9300 00b3                 						sts OCR2A, tmp
+                                 
+00002e e00a                      						ldi tmp, (1 << WGM01) | (1 << CS01) ;таймер для изменения значения шим (таймер для таймера???)
+00002f bd04                      						out TCCR0A, tmp
+000030 ec08                      						ldi tmp, 200
+000031 bd07                      						out OCR0A, tmp
+000032 e000                      						ldi tmp, (0 << OCIE0A)
+000033 9300 006e                 						sts TIMSK0, tmp
                                  					
-000028 e100                      						ldi tmp, (1 << PCIE0); инициализация внешнего прерывания PCINT0
-000029 bb0d                      						out EIMSK, tmp
-00002a ef0f                      						ldi tmp, 0xff
-00002b 9300 006b                 						sts PCMSK0, tmp
-00002d e003                      						ldi tmp, (1 << ISC00) | (1 << ISC01)
-00002e 9300 0069                 						sts EICRA, tmp
+000035 e100                      						ldi tmp, (1 << PCIE0); инициализация внешнего прерывания PCINT0
+000036 bb0d                      						out EIMSK, tmp
+000037 ef0f                      						ldi tmp, 0xff
+000038 9300 006b                 						sts PCMSK0, tmp
+00003a e003                      						ldi tmp, (1 << ISC00) | (1 << ISC01)
+00003b 9300 0069                 						sts EICRA, tmp
                                  
-000030 ef0f                      						ldi tmp, 0xff;лампочьки
-000031 b907                      						out DDRC, tmp
-000032 e800                      						ldi tmp, (1 << PB7);диод питания
-000033 b904                      						out DDRB, tmp
+00003d ef0f                      						ldi tmp, 0xff;лампочьки
+00003e b907                      						out DDRC, tmp
+00003f e800                      						ldi tmp, (1 << PB7);диод питания
+000040 b904                      						out DDRB, tmp
                                  
-000034 e000                      						ldi tmp, 0;кнопки
-000035 b90d                      						out DDRE, tmp
+000041 e000                      						ldi tmp, 0;кнопки
+000042 b90d                      						out DDRE, tmp
                                  
-000036 9478                      						sei
+000043 9478                      						sei
                                  
-000037 9588                      main_loop:				sleep
-000038 cffe                      						rjmp main_loop
+000044 9588                      main_loop:				sleep
+000045 cffe                      						rjmp main_loop
                                  				
                                  
-000039 b75f                      PCI0_int_handler:		in sreg_save, SREG
-00003a b10c                      						in tmp, PINE
-00003b fb00                      						bst tmp, PINE0
-00003c f436                      						brtc power_handler
-00003d fb01                      						bst tmp, PINE1
-00003e f45e                      						brtc mode_handler
-00003f fb02                      						bst tmp, PINE2
-000040 f47e                      						brtc speed_handler
-                                 PCI0_int_handler_end:	
-000041 bf5f                      						out SREG, sreg_save
-000042 9518                      						reti
+000046 b75f                      PCI0_int_handler:		in sreg_save, SREG
+000047 b10c                      						in tmp, PINE
+000048 fb00                      						bst tmp, PINE0
+000049 f436                      						brtc power_handler
+00004a fb01                      						bst tmp, PINE1
+00004b f46e                      						brtc mode_handler
+00004c fb02                      						bst tmp, PINE2
+00004d f48e                      						brtc speed_handler
+                                 	
+00004e bf5f                      PCI0_int_handler_end:	out SREG, sreg_save
+00004f 9518                      						reti
                                  
-000043 e010                      power_handler:			ldi buf, 0
-000044 3020                      						cpi pow, 0
-000045 f011                      						breq power_handler_off
-000046 e020                      power_handler_on:		ldi pow, 0
-000047 c001                      						rjmp power_handler_end
-000048 e021                      power_handler_off:		ldi pow, 1
-000049 cff7                      power_handler_end:		rjmp PCI0_int_handler_end
+000050 e010                      power_handler:			ldi buf, 0
+000051 3020                      						cpi pow, 0
+000052 f019                      						breq power_handler_off
+000053 e020                      power_handler_on:		ldi pow, 0
+000054 d045                      						rcall power_led_off_proc
+000055 c002                      						rjmp power_handler_end
+000056 e021                      power_handler_off:		ldi pow, 1
+000057 d049                      						rcall power_led_on_proc
+000058 cff5                      power_handler_end:		rjmp PCI0_int_handler_end
                                  
-00004a 9543                      mode_handler:			inc mod
-00004b e010                      						ldi buf, 0
-00004c 3043                      						cpi mod, 3
-00004d f409                      						brne mode_handler_end
-00004e e040                      						ldi mod, 0
-00004f cff1                      mode_handler_end:		rjmp PCI0_int_handler_end
+000059 9543                      mode_handler:			inc mod
+00005a e010                      						ldi buf, 0
+00005b 3043                      						cpi mod, 3
+00005c f409                      						brne mode_handler_end
+00005d e040                      						ldi mod, 0
+00005e cfef                      mode_handler_end:		rjmp PCI0_int_handler_end
                                  
-000050 94f8                      speed_handler:			cli
-000051 9533                      						inc spd
-000052 3037                      						cpi spd, 7
-000053 f409                      						brne speed_handler_not_reset
-000054 e032                      						ldi spd, 2
-000055 9330 0089                 speed_handler_not_reset:sts OCR1AH, spd
-000057 e000                      						ldi tmp, 0
-000058 9300 0088                 						sts OCR1AL, tmp
-00005a cfe6                      						rjmp PCI0_int_handler_end
-                                 
-00005b b75f                      OC1A_int_handler:		in sreg_save, SREG
-00005c e000                      						ldi tmp, 0
-00005d 1702                      						cp tmp, pow
-00005e f031                      						breq power_off
-00005f e001                      power_on:				ldi tmp, 1
-000060 1740                      						cp mod, tmp
-000061 f091                      						breq mode_half_blink;режим 1
-000062 f03c                      						brlt mode_flashing;режим 0
-000063 c01a                      						rjmp mode_led_chain;режим 2
-000064 c003                      						rjmp OC1A_int_handler_end
-000065 d025                      power_off:				rcall power_led_off
+00005f 94f8                      speed_handler:			cli
+000060 9533                      						inc spd
+000061 3037                      						cpi spd, 7
+000062 f409                      						brne speed_handler_not_reset
+000063 e032                      						ldi spd, 2
+000064 9330 0089                 speed_handler_not_reset:sts OCR1AH, spd
 000066 e000                      						ldi tmp, 0
-000067 b908                      						out PORTC, tmp
-000068 bf5f                      OC1A_int_handler_end:	out SREG, sreg_save
-000069 9518                      						reti
+000067 9300 0088                 						sts OCR1AL, tmp
+000069 9478                      						sei
+00006a cfe3                      						rjmp PCI0_int_handler_end
                                  
-00006a e000                      mode_flashing:			ldi tmp, 0
-00006b 1701                      						cp tmp, buf
-00006c f019                      						breq mode_flashing_off
-00006d ef0f                      mode_flashing_on:		ldi tmp, 0xff
-00006e e010                      						ldi buf, 0
-00006f c002                      						rjmp mode_flashing_end
-000070 e000                      mode_flashing_off:		ldi tmp, 0
-000071 e011                      						ldi buf, 1
-000072 b908                      mode_flashing_end:		out PORTC, tmp
-000073 cff4                      						rjmp OC1A_int_handler_end
+00006b b75f                      OC1A_int_handler:		in sreg_save, SREG
+00006c e000                      						ldi tmp, 0
+00006d 1702                      						cp tmp, pow
+00006e f031                      						breq power_off
+00006f e001                      power_on:				ldi tmp, 1
+000070 1740                      						cp mod, tmp
+000071 f089                      						breq mode_half_blink;режим 1
+000072 f034                      						brlt mode_flashing;режим 0
+000073 c019                      						rjmp mode_led_chain;режим 2
+000074 c002                      						rjmp OC1A_int_handler_end
+000075 e000                      power_off:				ldi tmp, 0
+000076 b908                      						out PORTC, tmp
+000077 bf5f                      OC1A_int_handler_end:	out SREG, sreg_save
+000078 9518                      						reti
                                  
-000074 e000                      mode_half_blink:		ldi tmp, 0
-000075 1701                      						cp tmp, buf
-000076 f019                      						breq mode_half_blink_2
-000077 e505                      mode_half_blink_1:		ldi tmp, 0b01010101
-000078 e010                      						ldi buf, 0
-000079 c002                      						rjmp mode_half_blink_end
-00007a ea0a                      mode_half_blink_2:		ldi tmp, 0b10101010
-00007b e011                      						ldi buf, 1
-00007c b908                      mode_half_blink_end:	out PORTC, tmp
-00007d cfea                      						rjmp OC1A_int_handler_end
+000079 e000                      mode_flashing:			ldi tmp, 0
+00007a 1701                      						cp tmp, buf
+00007b f019                      						breq mode_flashing_off
+00007c ef0f                      mode_flashing_on:		ldi tmp, 0xff
+00007d e010                      						ldi buf, 0
+00007e c002                      						rjmp mode_flashing_end
+00007f e000                      mode_flashing_off:		ldi tmp, 0
+000080 e011                      						ldi buf, 1
+000081 b908                      mode_flashing_end:		out PORTC, tmp
+000082 cff4                      						rjmp OC1A_int_handler_end
                                  
-00007e e061                      mode_led_chain:			ldi tmp2, 1
-00007f 2f01                      						mov tmp, buf ; buf -> tmp
-000080 3000                      led_chain_shift_start:	cpi tmp, 0
-000081 f019                      						breq led_chain_shift_end
-000082 0f66                      						lsl tmp2
-000083 950a                      						dec tmp
-000084 cffb                      						rjmp led_chain_shift_start
-000085 b968                      led_chain_shift_end:	out PORTC, tmp2
-000086 9513                      						inc buf
-000087 3018                      						cpi buf, 8
-000088 f409                      						brne mode_led_chain_end
-000089 e010                      						ldi buf, 0
-00008a cfdd                      mode_led_chain_end:		rjmp OC1A_int_handler_end
+000083 e000                      mode_half_blink:		ldi tmp, 0
+000084 1701                      						cp tmp, buf
+000085 f019                      						breq mode_half_blink_2
+000086 e505                      mode_half_blink_1:		ldi tmp, 0b01010101
+000087 e010                      						ldi buf, 0
+000088 c002                      						rjmp mode_half_blink_end
+000089 ea0a                      mode_half_blink_2:		ldi tmp, 0b10101010
+00008a e011                      						ldi buf, 1
+00008b b908                      mode_half_blink_end:	out PORTC, tmp
+00008c cfea                      						rjmp OC1A_int_handler_end
                                  
-00008b 0000                      power_led_off:			nop
-00008c 9508                      						ret
-00008d 0000                      power_led_on:			nop
+00008d e061                      mode_led_chain:			ldi tmp2, 1
+00008e 2f01                      						mov tmp, buf ; buf -> tmp
+00008f 3000                      led_chain_shift_start:	cpi tmp, 0
+000090 f019                      						breq led_chain_shift_end
+000091 0f66                      						lsl tmp2
+000092 950a                      						dec tmp
+000093 cffb                      						rjmp led_chain_shift_start
+000094 b968                      led_chain_shift_end:	out PORTC, tmp2
+000095 9513                      						inc buf
+000096 3018                      						cpi buf, 8
+000097 f409                      						brne mode_led_chain_end
+000098 e010                      						ldi buf, 0
+000099 cfdd                      mode_led_chain_end:		rjmp OC1A_int_handler_end
+                                 
+00009a 94f8                      power_led_off_proc:		cli
+00009b e070                      						ldi pow_but_dir, 0
+00009c e002                      						ldi tmp, (1 << OCIE0A); включаем таймер
+00009d 9300 006e                 						sts TIMSK0, tmp
+00009f 9478                      						sei
+0000a0 9508                      						ret
+                                 
+0000a1 94f8                      power_led_on_proc:		cli
+0000a2 e071                      						ldi pow_but_dir, 1
+0000a3 e002                      						ldi tmp, (1 << OCIE0A); включаем таймер
+0000a4 9300 006e                 						sts TIMSK0, tmp
+0000a6 9478                      						sei
+0000a7 9508                      						ret
+                                 
+                                 						/*ldi tmp, 0
+                                 						sts OCR2A, tmp*/
+                                 
+0000a8 b75f                      OC0_int_handler:		in sreg_save, SREG
+0000a9 94f8                      						cli
+0000aa 9100 00b3                 						lds tmp, OCR2A
+0000ac 3070                      						cpi pow_but_dir, 0
+0000ad f431                      						brne pow_but_power_on
+0000ae 3f0f                      pow_but_power_off:		cpi tmp, 255; лампа выключена на 255
+0000af f061                      						breq disable_OC0
+0000b0 9503                      						inc tmp
+0000b1 9300 00b3                 						sts OCR2A, tmp
+0000b3 c005                      						rjmp OC0_int_handler_end
+                                 
+0000b4 3000                      pow_but_power_on:		cpi tmp, 0; лампа включена на 0
+0000b5 f031                      						breq disable_OC0	
+0000b6 950a                      						dec tmp
+0000b7 9300 00b3                 						sts OCR2A, tmp	
+                                 								
+0000b9 9478                      OC0_int_handler_end:	sei
+0000ba bf5f                      						out SREG, sreg_save
+0000bb 9518                      						reti
+                                 
+0000bc e000                      disable_OC0:			ldi tmp, (0 << OCIE0A); отключаем таймер (не нужен)
+0000bd 9300 006e                 						sts TIMSK0, tmp
 
 
 RESOURCE USE INFORMATION
@@ -1633,37 +1682,37 @@ counted separately from r26..r31 here.
 "ATmega6490" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  51 r17:  13 r18:   5 r19:   6 r20:   5 
-r21:   4 r22:   3 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:  70 r17:  13 r18:   5 r19:   6 r20:   5 
+r21:   6 r22:   3 r23:   3 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
-Registers used: 7 out of 35 (20.0%)
+Registers used: 8 out of 35 (22.9%)
 
 "ATmega6490" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   6 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   8 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   1 brmi  :   0 
-brne  :   3 brpl  :   0 brsh  :   0 brtc  :   3 brts  :   0 brvc  :   0 
+brne  :   4 brpl  :   0 brsh  :   0 brtc  :   3 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   3 call  :   0 cbi   :   0 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   0 cls   :   0 
+clc   :   0 clh   :   0 cli   :   4 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   4 cpc   :   0 
-cpi   :   5 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   3 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  39 lds   :   0 lpm   :   0 lsl   :   1 
+cpi   :   8 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   4 inc   :   4 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  47 lds   :   1 lpm   :   0 lsl   :   1 
 lsr   :   0 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   2 or    :   0 ori   :   0 out   :  12 pop   :   0 
-push  :   0 rcall :   1 ret   :   2 reti  :   2 rjmp  :  16 rol   :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  15 pop   :   0 
+push  :   0 rcall :   2 ret   :   2 reti  :   3 rjmp  :  19 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
-sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   1 spm   :   0 st    :   0 std   :   0 sts   :  10 
+sei   :   5 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
+sez   :   0 sleep :   1 spm   :   0 st    :   0 std   :   0 sts   :  16 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
 Instructions used: 23 out of 113 (20.4%)
 
 "ATmega6490" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00011e    262      0    262   65536   0.4%
+[.cseg] 0x000000 0x000180    350      0    350   65536   0.5%
 [.dseg] 0x000100 0x000100      0      0      0    4096   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    2048   0.0%
 
