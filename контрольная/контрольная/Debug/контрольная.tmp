@@ -24,23 +24,33 @@
  <LABELS>
   <reset><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>32</LINE></reset>
   <PCI0_int_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>76</LINE></PCI0_int_handler>
-  <OC1A_int_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>84</LINE></OC1A_int_handler>
+  <OC1A_int_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>113</LINE></OC1A_int_handler>
   <main_loop><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>72</LINE></main_loop>
-  <power_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>94</LINE></power_off>
-  <power_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>88</LINE></power_on>
-  <mode_half_blink><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>111</LINE></mode_half_blink>
-  <mode_flashing><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>100</LINE></mode_flashing>
-  <mode_led_chain><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>122</LINE></mode_led_chain>
-  <OC1A_int_handler_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>97</LINE></OC1A_int_handler_end>
-  <power_led_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>136</LINE></power_led_off>
-  <mode_flashing_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>106</LINE></mode_flashing_off>
-  <mode_flashing_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>103</LINE></mode_flashing_on>
-  <mode_flashing_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>108</LINE></mode_flashing_end>
-  <mode_half_blink_2><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>117</LINE></mode_half_blink_2>
-  <mode_half_blink_1><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>114</LINE></mode_half_blink_1>
-  <mode_half_blink_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>119</LINE></mode_half_blink_end>
-  <led_chain_shift_start><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>124</LINE></led_chain_shift_start>
-  <led_chain_shift_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>129</LINE></led_chain_shift_end>
-  <mode_led_chain_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>134</LINE></mode_led_chain_end>
+  <power_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>88</LINE></power_handler>
+  <mode_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>96</LINE></mode_handler>
+  <speed_handler><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>103</LINE></speed_handler>
+  <PCI0_int_handler_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>84</LINE></PCI0_int_handler_end>
+  <power_handler_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>93</LINE></power_handler_off>
+  <power_handler_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>91</LINE></power_handler_on>
+  <power_handler_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>94</LINE></power_handler_end>
+  <mode_handler_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>101</LINE></mode_handler_end>
+  <speed_handler_not_reset><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>108</LINE></speed_handler_not_reset>
+  <power_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>123</LINE></power_off>
+  <power_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>117</LINE></power_on>
+  <mode_half_blink><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>140</LINE></mode_half_blink>
+  <mode_flashing><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>129</LINE></mode_flashing>
+  <mode_led_chain><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>151</LINE></mode_led_chain>
+  <OC1A_int_handler_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>126</LINE></OC1A_int_handler_end>
+  <power_led_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>165</LINE></power_led_off>
+  <mode_flashing_off><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>135</LINE></mode_flashing_off>
+  <mode_flashing_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>132</LINE></mode_flashing_on>
+  <mode_flashing_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>137</LINE></mode_flashing_end>
+  <mode_half_blink_2><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>146</LINE></mode_half_blink_2>
+  <mode_half_blink_1><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>143</LINE></mode_half_blink_1>
+  <mode_half_blink_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>148</LINE></mode_half_blink_end>
+  <led_chain_shift_start><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>153</LINE></led_chain_shift_start>
+  <led_chain_shift_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>158</LINE></led_chain_shift_end>
+  <mode_led_chain_end><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>163</LINE></mode_led_chain_end>
+  <power_led_on><FILE>D:\microcontrollers-KR\контрольная\контрольная\main.asm</FILE><LINE>167</LINE></power_led_on>
  </LABELS>
 </ASSEMBLER_INFO>

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  D:\microcontrollers-KR\контрольная\контрольная\main.asm Tue Dec 05 20:06:40 2023
+AVRASM ver. 2.2.8  D:\microcontrollers-KR\контрольная\контрольная\main.asm Tue Dec 05 21:26:27 2023
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1080,22 +1080,32 @@ DEF  mod          r20
 DEF  sreg_save    r21
 DEF  tmp2         r22
 CSEG reset        0000000f
-CSEG PCI0_int_handler 00000034
-CSEG OC1A_int_handler 0000003b
-CSEG main_loop    00000032
-CSEG power_off    00000045
-CSEG power_on     0000003f
-CSEG mode_half_blink 00000054
-CSEG mode_flashing 0000004a
-CSEG mode_led_chain 0000005e
-CSEG OC1A_int_handler_end 00000048
-CSEG power_led_off 0000006b
-CSEG mode_flashing_off 00000050
-CSEG mode_flashing_on 0000004d
-CSEG mode_flashing_end 00000052
-CSEG mode_half_blink_2 0000005a
-CSEG mode_half_blink_1 00000057
-CSEG mode_half_blink_end 0000005c
-CSEG led_chain_shift_start 00000060
-CSEG led_chain_shift_end 00000065
-CSEG mode_led_chain_end 0000006a
+CSEG PCI0_int_handler 00000039
+CSEG OC1A_int_handler 0000005b
+CSEG main_loop    00000037
+CSEG power_handler 00000043
+CSEG mode_handler 0000004a
+CSEG speed_handler 00000050
+CSEG PCI0_int_handler_end 00000041
+CSEG power_handler_off 00000048
+CSEG power_handler_on 00000046
+CSEG power_handler_end 00000049
+CSEG mode_handler_end 0000004f
+CSEG speed_handler_not_reset 00000055
+CSEG power_off    00000065
+CSEG power_on     0000005f
+CSEG mode_half_blink 00000074
+CSEG mode_flashing 0000006a
+CSEG mode_led_chain 0000007e
+CSEG OC1A_int_handler_end 00000068
+CSEG power_led_off 0000008b
+CSEG mode_flashing_off 00000070
+CSEG mode_flashing_on 0000006d
+CSEG mode_flashing_end 00000072
+CSEG mode_half_blink_2 0000007a
+CSEG mode_half_blink_1 00000077
+CSEG mode_half_blink_end 0000007c
+CSEG led_chain_shift_start 00000080
+CSEG led_chain_shift_end 00000085
+CSEG mode_led_chain_end 0000008a
+CSEG power_led_on 0000008d

@@ -34,19 +34,23 @@ reset:					ldi tmp, low(RAMEND);инициализация стека
 						ldi tmp, high(RAMEND)
 						out SPH, tmp
 
+						ldi pow, 0; инициализация регистров
+						ldi buf, 0
+						ldi mod, 0
+						ldi spd, 2
+
 						ldi tmp, (1<<OCIE1A);инициализация таймера
 						sts TIMSK1, tmp
 						ldi tmp, (1 << WGM12) | (1 << CS12); таймер по сравнению, прескейлер 1024
 						sts TCCR1B, tmp
-						ldi tmp, 0x02
-						sts OCR1AH, tmp
+						sts OCR1AH, spd; скорость
 						ldi tmp, 0x00
 						sts OCR1AL, tmp
 
-						;ldi tmp, 0b01111001; инициализация pwm
-						;sts TCCR2A, tmp
-						;ldi tmp, 190
-						;sts OCR2A, tmp
+						ldi tmp, 0b01111001; инициализация pwm
+						sts TCCR2A, tmp
+						ldi tmp, 0
+						sts OCR2A, tmp
 					
 						ldi tmp, (1 << PCIE0); инициализация внешнего прерывания PCINT0
 						out EIMSK, tmp
@@ -63,23 +67,48 @@ reset:					ldi tmp, low(RAMEND);инициализация стека
 						ldi tmp, 0;кнопки
 						out DDRE, tmp
 
-						ldi pow, 1; инициализация регистров
-						ldi buf, 0
-						ldi mod, 2
-						ldi spd, 1
 						sei
 
 main_loop:				sleep
 						rjmp main_loop
 				
 
-PCI0_int_handler:		in tmp, SREG
-						push tmp
-						ldi tmp, 0
-						cp tmp, pow
-						pop tmp
-						out SREG, tmp
+PCI0_int_handler:		in sreg_save, SREG
+						in tmp, PINE
+						bst tmp, PINE0
+						brtc power_handler
+						bst tmp, PINE1
+						brtc mode_handler
+						bst tmp, PINE2
+						brtc speed_handler
+PCI0_int_handler_end:	
+						out SREG, sreg_save
 						reti
+
+power_handler:			ldi buf, 0
+						cpi pow, 0
+						breq power_handler_off
+power_handler_on:		ldi pow, 0
+						rjmp power_handler_end
+power_handler_off:		ldi pow, 1
+power_handler_end:		rjmp PCI0_int_handler_end
+
+mode_handler:			inc mod
+						ldi buf, 0
+						cpi mod, 3
+						brne mode_handler_end
+						ldi mod, 0
+mode_handler_end:		rjmp PCI0_int_handler_end
+
+speed_handler:			cli
+						inc spd
+						cpi spd, 7
+						brne speed_handler_not_reset
+						ldi spd, 2
+speed_handler_not_reset:sts OCR1AH, spd
+						ldi tmp, 0
+						sts OCR1AL, tmp
+						rjmp PCI0_int_handler_end
 
 OC1A_int_handler:		in sreg_save, SREG
 						ldi tmp, 0
@@ -134,4 +163,6 @@ led_chain_shift_end:	out PORTC, tmp2
 mode_led_chain_end:		rjmp OC1A_int_handler_end
 
 power_led_off:			nop
+						ret
+power_led_on:			nop
 						ret
