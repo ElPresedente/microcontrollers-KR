@@ -1,139 +1,137 @@
 ;
-; контрольная.asm
+; AssemblerProject.asm
 ;
-; Created: 23.11.2023 12:40:46
+; Created: 05.12.2023 13:24:53
 ; Author : vova1
 ;
+
 .def tmp = R16
 .def buf = R17
 .def pow = R18
 .def spd = R19
 .def mod = R20
-.def tmp2 = R21
+.def sreg_save = R21
+.def tmp2 = R22
+
 .dseg
 
 .cseg
 
-.org 0
-rjmp setup
+.org $0000
+rjmp reset
 
-.org 0x000E; timer 1 comparation A vector
-rjmp timer1_handler
+.org PCI0addr
+rjmp PCI0_int_handler
 
-.org 0x0004
-rjmp buttons_handler
+.org OC1Aaddr
+rjmp OC1A_int_handler
 
-setup:
-	ldi tmp, 0b10000000; лапочька питания
-	out DDRB, tmp
-	ldi tmp, 0xff; гирлянда
-	out DDRC, tmp
-	ldi tmp, 0xff; кнопки
-	out DDRE, tmp
-	ldi tmp, 0b00010000; PUD bit //подача питания на кнопочьки
-	out MCUCR, tmp
-timer_init:
-	ldi tmp, 0b00000010; OCIE1A (bit 2 - прерывание по сравнению) 
-	sts TIMSK1, tmp
-	ldi tmp, 0b00001100; CS11 (прескейлер 8) WGM12 (таймер по сравнению)
-	sts TCCR1B, tmp
-	ldi tmp, 0x00
-	sts OCR1AH, tmp
-	ldi tmp, 128
-	sts OCR1AL, tmp
-pwm_init: 
-	ldi tmp, 0b01111001; TCCR2A регистр (fast pwm)
-	sts TCCR2A, tmp
-	ldi tmp, 190
-	sts OCR2A, tmp
-buttons_init:
-	ldi tmp, 0b00010000; включить pcint 0..7
-	sts EIMSK, tmp
-	ldi tmp, 0b00000111; включить pcint 0..2
-	sts PCMSK0, tmp
 
-registres_setup:
-	ldi buf, 0
-	ldi pow, 0
-	ldi spd, 1
-	ldi mod, 0
-	sei
-	rjmp start
 
 ; Replace with your application code
-start:
-	nop
-    rjmp start
+reset:					ldi tmp, low(RAMEND);инициализация стека
+						out SPL, tmp
+						ldi tmp, high(RAMEND)
+						out SPH, tmp
 
+						ldi tmp, (1<<OCIE1A);инициализация таймера
+						sts TIMSK1, tmp
+						ldi tmp, (1 << WGM12) | (1 << CS12); таймер по сравнению, прескейлер 1024
+						sts TCCR1B, tmp
+						ldi tmp, 0x02
+						sts OCR1AH, tmp
+						ldi tmp, 0x00
+						sts OCR1AL, tmp
 
-timer1_handler:
-	
-	ldi tmp, 0
-	cp buf, tmp
-	breq timer_equal ;branch if equal
-	ldi tmp, 0xff
-	out PORTC, tmp
-	ldi buf, 0
-	rjmp timer_return
-timer_equal:
-	ldi tmp, 0x00
-	out PORTC, tmp
-	ldi buf, 1
-timer_return:
-	reti; interrupt return
-	
+						;ldi tmp, 0b01111001; инициализация pwm
+						;sts TCCR2A, tmp
+						;ldi tmp, 190
+						;sts OCR2A, tmp
+					
+						ldi tmp, (1 << PCIE0); инициализация внешнего прерывания PCINT0
+						out EIMSK, tmp
+						ldi tmp, 0xff
+						sts PCMSK0, tmp
+						ldi tmp, (1 << ISC00) | (1 << ISC01)
+						sts EICRA, tmp
 
-buttons_handler:
-	// проверка на кнопки
-	in tmp, PINE
-	//brbc - прыжок на метку если флаг равен нулю,
-	bst tmp, 0; бит кнопки питания
-	brbc 6, buttons_no_power_proc
-	rcall power_button_proc
-buttons_no_power_proc:
-	bst tmp, 1; бит кнопки режима
-	brbc 6, buttons_no_mode_proc
-	rcall mode_button_proc
-buttons_no_mode_proc:
-	bst tmp, 2
-	brbc 6, buttons_return
-	rcall speed_button_proc
-buttons_return:
-	reti;
+						ldi tmp, 0xff;лампочьки
+						out DDRC, tmp
+						ldi tmp, (1 << PB7);диод питания
+						out DDRB, tmp
 
+						ldi tmp, 0;кнопки
+						out DDRE, tmp
 
-power_button_proc:
-	cpi pow, 1
-	breq power_button_proc_if
-	ldi pow, 1; else
-	rjmp power_button_proc_end
-power_button_proc_if:
-	ldi pow, 0
-power_button_proc_end:
-	ret
+						ldi pow, 1; инициализация регистров
+						ldi buf, 0
+						ldi mod, 2
+						ldi spd, 1
+						sei
 
-mode_button_proc:
-	inc mod
-	ldi tmp, 3
-	cpse mod, tmp; ComPare Skip Equal 
-	ldi mod, 0
-	ldi buf, 1
-	ret
+main_loop:				sleep
+						rjmp main_loop
+				
 
-speed_button_proc:
-	inc spd
-	ldi tmp, 11
-	cpse spd, tmp
-	ldi spd, 0
-	//пересчет скорости
-	mov spd, tmp
-	lsr tmp; деление на 2, остаток во флаге С
-	brbs 0, speed_button_proc_odd; по флагу С
-	ldi tmp2, 0
-	rjmp speed_button_proc_odd_after
-speed_button_proc_odd:
-	ldi tmp2, 128
-speed_button_proc_odd_after:
-	sts OCR1AL, tmp2
-	sts OCR1AH, tmp
-	ret
+PCI0_int_handler:		in tmp, SREG
+						push tmp
+						ldi tmp, 0
+						cp tmp, pow
+						pop tmp
+						out SREG, tmp
+						reti
+
+OC1A_int_handler:		in sreg_save, SREG
+						ldi tmp, 0
+						cp tmp, pow
+						breq power_off
+power_on:				ldi tmp, 1
+						cp mod, tmp
+						breq mode_half_blink;режим 1
+						brlt mode_flashing;режим 0
+						rjmp mode_led_chain;режим 2
+						rjmp OC1A_int_handler_end
+power_off:				rcall power_led_off
+						ldi tmp, 0
+						out PORTC, tmp
+OC1A_int_handler_end:	out SREG, sreg_save
+						reti
+
+mode_flashing:			ldi tmp, 0
+						cp tmp, buf
+						breq mode_flashing_off
+mode_flashing_on:		ldi tmp, 0xff
+						ldi buf, 0
+						rjmp mode_flashing_end
+mode_flashing_off:		ldi tmp, 0
+						ldi buf, 1
+mode_flashing_end:		out PORTC, tmp
+						rjmp OC1A_int_handler_end
+
+mode_half_blink:		ldi tmp, 0
+						cp tmp, buf
+						breq mode_half_blink_2
+mode_half_blink_1:		ldi tmp, 0b01010101
+						ldi buf, 0
+						rjmp mode_half_blink_end
+mode_half_blink_2:		ldi tmp, 0b10101010
+						ldi buf, 1
+mode_half_blink_end:	out PORTC, tmp
+						rjmp OC1A_int_handler_end
+
+mode_led_chain:			ldi tmp2, 1
+						mov tmp, buf ; buf -> tmp
+led_chain_shift_start:	cpi tmp, 0
+						breq led_chain_shift_end
+						lsl tmp2
+						dec tmp
+						rjmp led_chain_shift_start
+led_chain_shift_end:	out PORTC, tmp2
+						inc buf
+						cpi buf, 8
+						brne mode_led_chain_end
+						ldi buf, 0
+mode_led_chain_end:		rjmp OC1A_int_handler_end
+
+power_led_off:			nop
+						ret
